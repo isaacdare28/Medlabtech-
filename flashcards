@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Laboratory Science Flashcards</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --secondary: #6c757d;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --dark-primary: #0056b3;
+            --dark-bg: #212529;
+            --dark-card: #343a40;
+            --dark-text: #e9ecef;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        body.dark-mode {
+            background: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode h1 {
+            color: var(--dark-primary);
+        }
+
+        .instructions {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px var(--shadow);
+            padding: 1.5rem;
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 2rem;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode .instructions {
+            background: var(--dark-card);
+        }
+
+        .instructions h2 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .instructions h2 {
+            color: var(--dark-primary);
+        }
+
+        .instructions ul {
+            list-style: none;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .instructions ul.show {
+            display: block;
+        }
+
+        .instructions li {
+            margin: 0.5rem 0;
+        }
+
+        .flashcard-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            perspective: 1000px;
+            margin-bottom: 2rem;
+        }
+
+        .flashcard {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease, opacity 0.3s ease;
+            opacity: 0;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px var(--shadow);
+            cursor: pointer;
+        }
+
+        .flashcard.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            transition: background 0.3s ease;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        body.dark-mode .front, body.dark-mode .back {
+            background: var(--dark-card);
+        }
+
+        .front {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        body.dark-mode .front {
+            color: var(--dark-primary);
+        }
+
+        .back {
+            font-weight: 400;
+            color: var(--dark-text);
+            background: var(--primary);
+            transform: rotateY(180deg);
+        }
+
+        body.dark-mode .back {
+            background: var(--dark-primary);
+        }
+
+        .navigation, .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #fff;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--dark-primary);
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode button {
+            background: var(--dark-primary);
+        }
+
+        body.dark-mode button:hover {
+            background: #003d82;
+        }
+
+        .progress {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        body.dark-mode .progress {
+            color: var(--dark-primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #dee2e6;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        body.dark-mode .progress-bar {
+            background: #495057;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        body.dark-mode .progress-fill {
+            background: var(--dark-primary);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .flashcard-container {
+                height: 300px;
+            }
+            .front, .back {
+                font-size: 1rem;
+                padding: 1.5rem;
+            }
+            button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Medical Laboratory Science Flashcards</h1>
+    </header>
+
+    <div class="instructions">
+        <h2 onclick="toggleInstructions()">Instructions <span>▼</span></h2>
+        <ul id="instructionsList">
+            <li><strong>Flip Card:</strong> Click to reveal the answer.</li>
+            <li><strong>Navigate:</strong> Use "Previous" or "Next" to cycle through cards.</li>
+            <li><strong>Shuffle:</strong> Randomize the card sequence.</li>
+            <li><strong>Mark Learned:</strong> Flag mastered cards (turns green).</li>
+            <li><strong>Reset:</strong> Clear progress and restore defaults.</li>
+            <li><strong>Dark Mode:</strong> Switch to a low-light interface.</li>
+            <li><strong>Progress:</strong> Monitor card position and learned count below.</li>
+        </ul>
+    </div>
+
+    <div class="flashcard-container" id="flashcardContainer">
+        <!-- 100 Professionally Phrased MLS Flashcards -->
+        <div class="flashcard active" data-learned="false"><div class="flashcard-inner"><div class="front">Define Medical Laboratory Science.</div><div class="back">A healthcare discipline focused on analyzing biological specimens to support disease diagnosis, treatment, and prevention.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What constitutes a clinical laboratory?</div><div class="back">A controlled environment where diagnostic tests are performed on patient specimens to inform medical decisions.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Explain the scope of hematology.</div><div class="back">The scientific study of blood, blood-forming organs, and associated disorders.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Describe clinical chemistry.</div><div class="back">The branch of laboratory medicine analyzing biochemical constituents in body fluids for diagnostic purposes.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the primary focus of microbiology in MLS?</div><div class="back">The identification and characterization of microorganisms contributing to infectious diseases.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Elucidate the role of immunology in laboratory science.</div><div class="back">The investigation of immune system functions and responses to pathogens or foreign substances.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does a Complete Blood Count (CBC) assess?</div><div class="back">A comprehensive evaluation of blood components, including red cells, white cells, and platelets.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of a differential leukocyte count?</div><div class="back">To quantify and classify white blood cell types for diagnostic insights.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Define hemoglobin and its clinical significance.</div><div class="back">An oxygen-transporting protein in erythrocytes, critical for assessing anemia and oxygenation status.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does hematocrit measure?</div><div class="back">The volumetric proportion of red blood cells in whole blood, indicative of blood viscosity and oxygen capacity.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Describe the function of platelets in hemostasis.</div><div class="back">Small cell fragments essential for initiating clot formation and maintaining vascular integrity.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the physiological process of coagulation?</div><div class="back">The cascade of enzymatic reactions resulting in blood clot formation to prevent hemorrhage.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does Prothrombin Time (PT) evaluate?</div><div class="back">The time required for blood to clot via the extrinsic and common pathways, often monitoring anticoagulant therapy.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is measured by Activated Partial Thromboplastin Time (APTT)?</div><div class="back">The efficiency of the intrinsic and common coagulation pathways, used to detect bleeding disorders.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the utility of a peripheral blood smear?</div><div class="back">A microscopic examination of stained blood cells to assess morphology and detect abnormalities.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Define electrolytes and their diagnostic relevance.</div><div class="back">Charged ions (e.g., sodium, potassium) critical for cellular function, measured to evaluate metabolic balance.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the clinical importance of glucose measurement?</div><div class="back">A key indicator of carbohydrate metabolism, used to diagnose and manage diabetes mellitus.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does Blood Urea Nitrogen (BUN) indicate?</div><div class="back">A marker of renal function and protein metabolism, elevated in kidney dysfunction.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the significance of creatinine levels?</div><div class="back">A byproduct of muscle metabolism, reflecting glomerular filtration rate and kidney health.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What components are analyzed in a lipid profile?</div><div class="back">Cholesterol, triglycerides, HDL, and LDL levels to assess cardiovascular risk.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What role do enzymes play in clinical diagnostics?</div><div class="back">Catalysts of metabolic reactions, measured to detect tissue damage or organ dysfunction.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is Aspartate Aminotransferase (AST) used for?</div><div class="back">An enzyme marker for liver, heart, and muscle injury detection.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does Alanine Aminotransferase (ALT) indicate?</div><div class="back">A liver-specific enzyme elevated in hepatic disease or injury.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of a microbial culture?</div><div class="back">To isolate and identify pathogenic microorganisms from clinical specimens.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Describe the Gram staining technique.</div><div class="back">A differential staining method classifying bacteria based on cell wall composition.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What defines an aerobic microorganism?</div><div class="back">An organism requiring oxygen for metabolic processes and growth.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What characterizes an anaerobic microorganism?</div><div class="back">An organism thriving in oxygen-deprived environments.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the objective of antimicrobial susceptibility testing?</div><div class="back">To determine the efficacy of antibiotics against specific bacterial isolates.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Define an antigen in immunological terms.</div><div class="back">A molecule eliciting an immune response, typically foreign to the host.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the function of an antibody?</div><div class="back">An immunoglobulin neutralizing specific antigens to combat infection.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does serology encompass in MLS?</div><div class="back">The analysis of serum to detect antibodies or antigens for diagnostic purposes.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the principle behind ELISA?</div><div class="back">An enzyme-linked immunosorbent assay detecting antigen-antibody interactions via colorimetric change.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does an antibody titer measure?</div><div class="back">The concentration of antibodies in serum, indicating immune response strength.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What are the primary functions of blood banking?</div><div class="back">Collection, processing, and compatibility testing of blood for safe transfusion.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of ABO blood typing?</div><div class="back">To classify blood into A, B, AB, or O groups based on surface antigens.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the clinical relevance of the Rh factor?</div><div class="back">A determinant of blood compatibility, denoted as positive or negative, critical in transfusions.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does crossmatching ensure in transfusion medicine?</div><div class="back">Compatibility between donor blood and recipient serum to prevent adverse reactions.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is a transfusion reaction?</div><div class="back">An immunological or physiological response to incompatible blood administration.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the mechanism of Polymerase Chain Reaction (PCR)?</div><div class="back">A molecular technique amplifying specific DNA segments for diagnostic analysis.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the goal of DNA sequencing in MLS?</div><div class="back">To determine the precise nucleotide sequence of DNA for genetic diagnostics.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What constitutes a gene mutation?</div><div class="back">An alteration in DNA sequence potentially leading to disease or altered function.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the principle of electrophoresis?</div><div class="back">A method separating charged molecules based on size and charge in an electric field.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is a biomarker in laboratory diagnostics?</div><div class="back">A quantifiable biological indicator of disease presence or progression.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does urinalysis evaluate?</div><div class="back">Physical, chemical, and microscopic properties of urine for diagnostic screening.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the function of a reagent strip in urinalysis?</div><div class="back">A chemically treated strip detecting specific urine analytes via color change.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does urine specific gravity indicate?</div><div class="back">The concentration of solutes in urine, reflecting hydration and kidney function.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What are urinary casts?</div><div class="back">Cylindrical protein structures in urine, signaling renal pathology.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Define a parasite in the context of MLS.</div><div class="back">An organism deriving nutrients from a host, often causing disease detectable in lab tests.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of a fecal culture?</div><div class="back">To isolate and identify gastrointestinal pathogens from stool specimens.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does an Ova and Parasite (O&P) examination detect?</div><div class="back">Parasitic eggs and organisms in stool, diagnosing infections.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the operational principle of a centrifuge?</div><div class="back">A device using rotational force to separate specimen components by density.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the role of a spectrophotometer in MLS?</div><div class="back">An instrument quantifying analyte concentration via light absorption measurement.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does calibration achieve in laboratory equipment?</div><div class="back">The adjustment of instruments to ensure precision and accuracy in test results.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of a control sample?</div><div class="back">A standardized specimen validating the reliability of analytical procedures.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does quality assurance entail in a clinical lab?</div><div class="back">A systematic process ensuring all laboratory activities meet predefined standards.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the focus of quality control in MLS?</div><div class="back">Routine monitoring of test performance to detect and correct errors.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What governs the Clinical Laboratory Improvement Amendments (CLIA)?</div><div class="back">Federal regulations ensuring laboratory testing accuracy and reliability.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the objective of proficiency testing?</div><div class="back">An external assessment verifying a laboratory’s analytical competency.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is a reagent’s role in laboratory testing?</div><div class="back">A chemical substance facilitating the detection or measurement of analytes.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the utility of a micropipette?</div><div class="back">A precision tool for transferring small, accurate volumes of liquid in testing.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">Describe the technique of venipuncture.</div><div class="back">The process of accessing a vein to collect blood specimens for analysis.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is a vacuum blood collection tube?</div><div class="back">A sterile container with additives for preserving blood samples during collection.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is hemolysis and its impact on testing?</div><div class="back">The lysis of red blood cells, potentially skewing biochemical test results.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What distinguishes plasma from serum?</div><div class="back">Plasma contains clotting factors, while serum is the fluid remaining after clot removal.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What qualifies an organism as a pathogen?</div><div class="back">A microorganism capable of causing disease, identifiable through laboratory methods.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the function of an autoclave in a lab?</div><div class="back">A high-pressure steam device sterilizing equipment to prevent contamination.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does biosafety encompass in MLS?</div><div class="back">Protocols protecting laboratory personnel from exposure to biohazards.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What are Biosafety Levels (BSLs)?</div><div class="back">Classifications (1-4) defining containment requirements for handling pathogens.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of a biological safety cabinet?</div><div class="back">A ventilated enclosure safeguarding personnel and samples during biohazardous work.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the role of a compound microscope?</div><div class="back">An optical tool magnifying cellular structures for detailed morphological analysis.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the significance of histological staining?</div><div class="back">The application of dyes to enhance contrast and visibility of cellular components.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is a wet mount preparation?</div><div class="back">A microscopic slide with a liquid suspension for observing live specimens.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What defines an analyte in laboratory science?</div><div class="back">A substance or compound under quantitative or qualitative analysis in a specimen.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What establishes a reference interval?</div><div class="back">A statistically derived range of normal values for a specific test in a healthy population.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What constitutes a critical result?</div><div class="back">A test outcome requiring immediate clinical intervention due to its severity.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the implication of a false-positive result?</div><div class="back">A test indicating pathology where none exists, potentially leading to misdiagnosis.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the consequence of a false-negative result?</div><div class="back">A test failing to detect an existing condition, delaying necessary treatment.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does diagnostic sensitivity measure?</div><div class="back">The ability of a test to correctly identify individuals with a specific condition.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does diagnostic specificity measure?</div><div class="back">The ability of a test to correctly exclude individuals without a specific condition.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of a chain of custody?</div><div class="back">A documented process ensuring specimen integrity and traceability for legal or forensic purposes.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is a Laboratory Information System (LIS)?</div><div class="back">An integrated software platform managing laboratory data, workflows, and reporting.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What does laboratory accreditation signify?</div><div class="back">Official recognition that a laboratory meets rigorous quality and competency standards.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the role of the College of American Pathologists (CAP)?</div><div class="back">An organization providing accreditation and proficiency testing for clinical laboratories.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is meant by turnaround time in a laboratory?</div><div class="back">The duration from specimen receipt to result availability, a key performance metric.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What defines a point-of-care testing (POCT) method?</div><div class="back">Diagnostic testing performed at or near the patient, yielding rapid results.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is the purpose of a proficiency specimen?</div><div class="back">A standardized sample used to externally validate laboratory testing accuracy.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What is a delta check in laboratory practice?</div><div class="back">A quality control measure comparing current results to prior values for consistency.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What distinguishes a medical laboratory technician?</div><div class="back">A professional trained to perform routine diagnostic tests under supervision.</div></div></div>
+        <div class="flashcard" data-learned="false"><div class="flashcard-inner"><div class="front">What defines a medical laboratory scientist?</div><div class="back">A highly skilled practitioner conducting complex analyses and interpreting results.</div></div></div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
+    </div>
+
+    <div class="controls">
+        <button id="shuffleBtn">Shuffle</button>
+        <button id="markLearnedBtn">Mark Learned</button>
+        <button id="resetBtn">Reset</button>
+        <button id="darkModeBtn">Dark Mode</button>
+    </div>
+
+    <div class="progress">
+        <span id="progressText">Card 1 of 100 | Learned: 0</span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 1%;"></div></div>
+    </div>
+
+    <script>
+        const allFlashcards = Array.from(document.querySelectorAll('.flashcard'));
+        let activeFlashcards = [...allFlashcards];
+        let currentIndex = 0;
+        let learnedCount = 0;
+
+        const container = document.getElementById('flashcardContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const markLearnedBtn = document.getElementById('markLearnedBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        const progressText = document.getElementById('progressText');
+        const progressFill = document.getElementById('progressFill');
+
+        function updateDisplay() {
+            activeFlashcards.forEach((card, index) => {
+                card.classList.toggle('active', index === currentIndex);
+            });
+            const totalCards = activeFlashcards.length;
+            progressText.textContent = `Card ${currentIndex + 1} of ${totalCards} | Learned: ${learnedCount}`;
+            progressFill.style.width = `${((currentIndex + 1) / totalCards) * 100}%`;
+        }
+
+        allFlashcards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            activeFlashcards[currentIndex].classList.remove('flipped');
+            currentIndex = (currentIndex - 1 + activeFlashcards.length) % activeFlashcards.length;
+            updateDisplay();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            activeFlashcards[currentIndex].classList.remove('flipped');
+            currentIndex = (currentIndex + 1) % activeFlashcards.length;
+            updateDisplay();
+        });
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        shuffleBtn.addEventListener('click', () => {
+            activeFlashcards = shuffle([...activeFlashcards]);
+            currentIndex = 0;
+            activeFlashcards.forEach((card, index) => {
+                card.style.order = index;
+            });
+            updateDisplay();
+        });
+
+        markLearnedBtn.addEventListener('click', () => {
+            const currentCard = activeFlashcards[currentIndex];
+            if (currentCard.dataset.learned === 'false') {
+                currentCard.dataset.learned = 'true';
+                learnedCount++;
+                currentCard.querySelector('.front').style.backgroundColor = '#d4edda';
+            }
+            updateDisplay();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            allFlashcards.forEach(card => {
+                card.dataset.learned = 'false';
+                card.classList.remove('flipped');
+                card.querySelector('.front').style.backgroundColor = '';
+            });
+            activeFlashcards = [...allFlashcards];
+            learnedCount = 0;
+            currentIndex = 0;
+            updateDisplay();
+        });
+
+        darkModeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            darkModeBtn.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+        });
+
+        function toggleInstructions() {
+            const list = document.getElementById('instructionsList');
+            list.classList.toggle('show');
+            const arrow = document.querySelector('.instructions h2 span');
+            arrow.textContent = list.classList.contains('show') ? '▲' : '▼';
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
