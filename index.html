@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Laboratory Technician App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Medical Laboratory Science App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* General Styles */
         body {
@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
             color: #2c3e50;
-            background: url('https://plus.unsplash.com/premium_photo-1661483316964-67af6d6c55d8?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGJsYWNrJTIwY29tbXVuaXR5JTIwaGVhbHRofGVufDB8fDB8fHww');
+            background: url('https://media.istockphoto.com/id/1387432270/photo/senior-couple-at-home-with-man-talking-to-female-nurse-or-care-worker-using-digital-tablet.jpg?s=612x612&w=0&k=20&c=6WC4GhohyOnM9OHINT0BsflH3EUyIFie0xdn6cPPsGE=');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -20,7 +20,7 @@
         }
 
         header {
-            background: rgba(52, 152, 219, 0.9); /* Semi-transparent header */
+            background: rgba(44, 62, 80, 0.8); /* Semi-transparent header */
             padding: 2rem 1rem;
             text-align: center;
             color: #fff;
@@ -144,31 +144,6 @@
             color: #e74c3c;
         }
 
-        .section {
-            display: none;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.98); /* Semi-transparent white */
-            border-radius: 12px;
-            margin: 20px auto;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 900px;
-        }
-
-        .section h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-
-        .section p {
-            font-size: 1rem;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            color: #7f8c8d;
-        }
-
         @media (max-width: 768px) {
             .title {
                 font-size: 2rem;
@@ -215,128 +190,73 @@
 <body>
     <header>
         <div class="title-container">
-            <h1 class="title">Medical Laboratory Technician</h1>
-            <a href="#notifications" class="notification-icon">
-                <img src="https://img.icons8.com/ios-filled/50/ffffff/appointment-reminders.png" alt="Notifications">
+            <h1 class="title">Medical Laboratory Science</h1>
+            <a href="javascript:void(0)" class="notification-icon" onclick="handleNotifications()">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/appointment-reminders.png" alt="Notifications Icon">
             </a>
         </div>
-        <h2 class="subtitle">Advancing Skills in Laboratory Medicine</h2>
+        <h2 class="subtitle">Advancing Skills in Laboratory Diagnostics</h2>
     </header>
 
     <div class="menu-container">
         <div class="menu-item">
-            <a href="#overview">
-                <img src="https://img.icons8.com/ios/50/2980b9/overview-pages-3.png" alt="Overview">
-                <h2>Overview</h2>
+            <a href="overview.html">
+                <img src="https://img.icons8.com/ios/50/2980b9/overview-pages-3.png" alt="Course Overview Icon">
+                <h2>Course Overview</h2>
             </a>
         </div>
         <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/book.png" alt="Learning Resources">
-            <h2>Learning Resources</h2>
+            <img src="https://img.icons8.com/ios/50/2980b9/book.png" alt="Learning Modules Icon">
+            <h2>Learning Modules</h2>
             <div class="submenu">
-                <a href="#lecture-notes">Lecture Notes</a>
+                <a href="Lecturenote.html">Lecture Notes</a>
                 <a href="flashcards.html">Flashcards</a>
-                <a href="#tutorial-videos">Tutorial Videos</a>
+                <a href="javascript:void(0)" onclick="handleLink('S130')">Tutorial Videos</a>
+                <a href="javascript:void(0)" onclick="handleLink('S124')">Quizzes</a>
             </div>
         </div>
         <div class="menu-item">
-            <a href="#practice-tests">
-                <img src="https://img.icons8.com/ios/50/2980b9/test-passed.png" alt="Practice Tests">
-                <h2>Practice Tests</h2>
-            </a>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/microscope.png" alt="Laboratory">
-            <h2>Laboratory</h2>
+            <img src="https://img.icons8.com/ios/50/2980b9/microscope.png" alt="Laboratory Tools Icon">
+            <h2>Laboratory Tools</h2>
             <div class="submenu">
-                <a href="#microscopy">Microscopy</a>
-                <a href="#sample-handling">Sample Handling</a>
-                <a href="#equipment-use">Equipment Use</a>
+                <a href="javascript:void(0)" onclick="handleLink('S127')">Microscopy Techniques</a>
+                <a href="javascript:void(0)" onclick="handleLink('S132')">Sample Handling</a>
+                <a href="javascript:void(0)" onclick="handleLink('S126')">Instrumentation</a>
             </div>
         </div>
         <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/conference-call.png" alt="Community">
+            <img src="https://img.icons8.com/ios/50/2980b9/conference.png" alt="Community Icon">
             <h2>Community</h2>
             <div class="submenu">
-                <a href="#forums">Forums</a>
-                <a href="#chat-rooms">Chat Rooms</a>
+                <a href="javascript:void(0)" onclick="handleLink('S128')">Forums</a>
+                <a href="javascript:void(0)" onclick="handleLink('S131')">Chat Rooms</a>
             </div>
         </div>
         <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/event-accepted-tentatively.png" alt="Events & Updates">
-            <h2>Events & Updates</h2>
+            <img src="https://img.icons8.com/ios/50/2980b9/class.png" alt="Courses Icon">
+            <h2>Online Courses</h2>
             <div class="submenu">
-                <a href="#upcoming-events">Upcoming Events</a>
-                <a href="#latest-news">Latest News</a>
+                <a href="https://alison.com/course/diploma-in-medical-laboratory-technology">Enroll Now</a>
             </div>
         </div>
-    </div>
-
-    <!-- Sections corresponding to the menu items -->
-    <div id="overview" class="section">
-        <h2>Overview</h2>
-        <p>This section provides an overview of the Medical Laboratory Technician program.</p>
-    </div>
-    <div id="lecture-notes" class="section">
-        <h2>Lecture Notes</h2>
-        <p>Access lecture notes for various topics in laboratory medicine.</p>
-    </div>
-    <div id="flashcards" class="section">
-        <h2>Flashcards</h2>
-        <p>Interactive flashcards to help you study key concepts.</p>
-    </div>
-    <div id="tutorial-videos" class="section">
-        <h2>Tutorial Videos</h2>
-        <p>Watch tutorial videos to enhance your understanding of laboratory techniques.</p>
-    </div>
-    <div id="practice-tests" class="section">
-        <h2>Practice Tests</h2>
-        <p>Take practice tests to assess your knowledge and prepare for exams.</p>
-    </div>
-    <div id="microscopy" class="section">
-        <h2>Microscopy</h2>
-        <p>Learn about microscopy techniques and applications in the laboratory.</p>
-    </div>
-    <div id="sample-handling" class="section">
-        <h2>Sample Handling</h2>
-        <p>Understand the best practices for handling laboratory samples.</p>
-    </div>
-    <div id="equipment-use" class="section">
-        <h2>Equipment Use</h2>
-        <p>Get familiar with the use of various laboratory equipment.</p>
-    </div>
-    <div id="forums" class="section">
-        <h2>Forums</h2>
-        <p>Join discussions with other students and professionals in the field.</p>
-    </div>
-    <div id="chat-rooms" class="section">
-        <h2>Chat Rooms</h2>
-        <p>Engage in real-time conversations with peers and mentors.</p>
-    </div>
-    <div id="upcoming-events" class="section">
-        <h2>Upcoming Events</h2>
-        <p>Stay updated on upcoming events and workshops.</p>
-    </div>
-    <div id="latest-news" class="section">
-        <h2>Latest News</h2>
-        <p>Read the latest news and updates in the field of laboratory medicine.</p>
+        <div class="menu-item">
+            <img src="https://img.icons8.com/ios/50/2980b9/event-accepted-tentatively.png" alt="Events Icon">
+            <h2>Events & News</h2>
+            <div class="submenu">
+                <a href="javascript:void(0)" onclick="handleLink('S134')">Upcoming Events</a>
+                <a href="javascript:void(0)" onclick="handleLink('S135')">Latest News</a>
+            </div>
+        </div>
     </div>
 
     <script>
-        const menuItems = document.querySelectorAll('.menu-item a');
-        const sections = document.querySelectorAll('.section');
+        function handleLink(sectionId) {
+            alert(`Navigating to section: ${sectionId}`); // Replace with actual logic
+        }
 
-        menuItems.forEach(item => {
-            item.addEventListener('click', function(event) {
-                event.preventDefault();
-                sections.forEach(section => section.style.display = 'none');
-                const targetSection = document.querySelector(item.getAttribute('href'));
-                if (targetSection) {
-                    targetSection.style.display = 'block';
-                    window.scrollTo({ top: targetSection.offsetTop, behavior: 'smooth' });
-                }
-            });
-        });
+        function handleNotifications() {
+            alert("Notifications clicked!"); // Replace with actual logic
+        }
     </script>
 </body>
-    </html>
+</html>
