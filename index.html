@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Laboratory Science App</title>
+    <title>Health Care Assistant Students App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* General Styles */
@@ -12,11 +12,11 @@
             margin: 0;
             padding: 0;
             color: #2c3e50;
-            background: url('https://media.istockphoto.com/id/1387432270/photo/senior-couple-at-home-with-man-talking-to-female-nurse-or-care-worker-using-digital-tablet.jpg?s=612x612&w=0&k=20&c=6WC4GhohyOnM9OHINT0BsflH3EUyIFie0xdn6cPPsGE=');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             line-height: 1.6;
+            transition: background-image 1s ease-in-out;
         }
 
         header {
@@ -190,12 +190,12 @@
 <body>
     <header>
         <div class="title-container">
-            <h1 class="title">Medical Laboratory Science</h1>
+            <h1 class="title">Health Care Assistant</h1>
             <a href="javascript:void(0)" class="notification-icon" onclick="handleNotifications()">
                 <img src="https://img.icons8.com/ios-filled/50/ffffff/appointment-reminders.png" alt="Notifications Icon">
             </a>
         </div>
-        <h2 class="subtitle">Advancing Skills in Laboratory Diagnostics</h2>
+        <h2 class="subtitle">Empowering Future Health Care Assistants</h2>
     </header>
 
     <div class="menu-container">
@@ -211,45 +211,57 @@
             <div class="submenu">
                 <a href="Lecturenote.html">Lecture Notes</a>
                 <a href="flashcards.html">Flashcards</a>
-                <a href="javascript:void(0)" onclick="handleLink('S130')">Tutorial Videos</a>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="https://img.icons8.com/ios/50/2980b9/quiz.png" alt="Practice Questions Icon">
+            <h2>Practice Questions</h2>
+            <div class="submenu">
                 <a href="javascript:void(0)" onclick="handleLink('S124')">Quizzes</a>
+                <a href="javascript:void(0)" onclick="handleLink('S125')">Mock Exams</a>
             </div>
         </div>
         <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/microscope.png" alt="Laboratory Tools Icon">
-            <h2>Laboratory Tools</h2>
+            <img src="https://img.icons8.com/ios/50/2980b9/video.png" alt="Videos Icon">
+            <h2>Videos</h2>
             <div class="submenu">
-                <a href="javascript:void(0)" onclick="handleLink('S127')">Microscopy Techniques</a>
-                <a href="javascript:void(0)" onclick="handleLink('S132')">Sample Handling</a>
-                <a href="javascript:void(0)" onclick="handleLink('S126')">Instrumentation</a>
+                <a href="javascript:void(0)" onclick="handleLink('S130')">Lecture Videos</a>
+                <a href="javascript:void(0)" onclick="handleLink('S133')">Caregiving Tutorials</a>
             </div>
         </div>
         <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/conference.png" alt="Community Icon">
-            <h2>Community</h2>
+            <img src="https://img.icons8.com/ios/50/2980b9/library.png" alt="Resources Icon">
+            <h2>Resources</h2>
             <div class="submenu">
-                <a href="javascript:void(0)" onclick="handleLink('S128')">Forums</a>
-                <a href="javascript:void(0)" onclick="handleLink('S131')">Chat Rooms</a>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/class.png" alt="Courses Icon">
-            <h2>Online Courses</h2>
-            <div class="submenu">
-                <a href="https://alison.com/course/diploma-in-medical-laboratory-technology">Enroll Now</a>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.icons8.com/ios/50/2980b9/event-accepted-tentatively.png" alt="Events Icon">
-            <h2>Events & News</h2>
-            <div class="submenu">
-                <a href="javascript:void(0)" onclick="handleLink('S134')">Upcoming Events</a>
-                <a href="javascript:void(0)" onclick="handleLink('S135')">Latest News</a>
+                <a href="javascript:void(0)" onclick="handleLink('S136')">Access Resources</a>
+                <a href="javascript:void(0)" onclick="handleLink('S137')">Supplementary Materials</a>
             </div>
         </div>
     </div>
 
     <script>
+        // Array of background image URLs
+        const images = [
+            'https://images.unsplash.com/photo-1576091160550-2173fdabe9c0?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhbHRoY2FyZSUyMGFzc2lzdGFudHxlbnwwfHwwfHx8MA%3D%3D',
+            'https://images.unsplash.com/photo-1616627671775-47e534b27359?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aGVhbHRoY2FyZSUyMGFzc2lzdGFudHxlbnwwfHwwfHx8MA%3D%3D',
+            'https://images.unsplash.com/photo-1584516150909-c43483ee7935?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aGVhbHRoY2FyZSUyMGFzc2lzdGFudHxlbnwwfHwwfHx8MA%3D%3D',
+            'https://images.unsplash.com/photo-1576765607924-3f7b8410d9c3?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGhlYWx0aGNhcmUlMjBhc3Npc3RhbnR8ZW58MHx8MHx8fDA%3D',
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGhlYWx0aGNhcmUlMjBhc3Npc3RhbnR8ZW58MHx8MHx8fDA%3D'
+        ];
+
+        let currentIndex = 0;
+
+        function changeBackground() {
+            document.body.style.backgroundImage = `url('${images[currentIndex]}')`;
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+
+        // Change background every 10 seconds (10000 milliseconds)
+        setInterval(changeBackground, 10000);
+
+        // Initial background set
+        changeBackground();
+
         function handleLink(sectionId) {
             alert(`Navigating to section: ${sectionId}`); // Replace with actual logic
         }
@@ -259,4 +271,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
